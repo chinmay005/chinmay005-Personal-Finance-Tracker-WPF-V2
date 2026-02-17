@@ -215,22 +215,22 @@ namespace PersonalFinanceTracker
       if (user != null)
       {
         LoggedInUser = user;
-        
+
         try
         {
           // Create and show MainWindow
           MainWindow mainWindow = new MainWindow(user);
           Application.Current.MainWindow = mainWindow;
           mainWindow.Show();
-          
+
           // Close login window
           this.Close();
         }
         catch (Exception ex)
         {
-          MessageBox.Show($"Error loading main window: {ex.Message}\n\n{ex.StackTrace}", 
-                         "Application Error", 
-                         MessageBoxButton.OK, 
+          MessageBox.Show($"Error loading main window: {ex.Message}\n\n{ex.StackTrace}",
+                         "Application Error",
+                         MessageBoxButton.OK,
                          MessageBoxImage.Error);
           // Keep login window open on error
         }
