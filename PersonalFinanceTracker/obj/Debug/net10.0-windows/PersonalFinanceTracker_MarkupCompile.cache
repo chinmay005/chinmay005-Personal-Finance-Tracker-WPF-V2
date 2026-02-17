@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Github-Projects\chinmay005-Personal-Finance-Tracker-WPF\PersonalFinanceTracker\obj\Debug\net10.0-windows\
+C:\Github-Projects\Feb2026\chinmay005-Personal-Finance-Tracker-WPF-V2\PersonalFinanceTracker\obj\Debug\net10.0-windows\
 PersonalFinanceTracker
 none
 false
 TRACE;DEBUG;NET;NET10_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Github-Projects\chinmay005-Personal-Finance-Tracker-WPF\PersonalFinanceTracker\App.xaml
-11407045341
+C:\Github-Projects\Feb2026\chinmay005-Personal-Finance-Tracker-WPF-V2\PersonalFinanceTracker\App.xaml
+2-216653475
 
-5-189105276
-223-1570471214
-MainWindow.xaml;
+6-800411267
+223-1638854329
+LoginWindow.xaml;MainWindow.xaml;
 
 False
 

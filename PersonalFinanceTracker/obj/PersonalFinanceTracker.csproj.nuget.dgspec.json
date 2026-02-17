@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Github-Projects\\chinmay005-Personal-Finance-Tracker-WPF\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj": {}
+    "C:\\Github-Projects\\Feb2026\\chinmay005-Personal-Finance-Tracker-WPF-V2\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj": {}
   },
   "projects": {
-    "C:\\Github-Projects\\chinmay005-Personal-Finance-Tracker-WPF\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj": {
+    "C:\\Github-Projects\\Feb2026\\chinmay005-Personal-Finance-Tracker-WPF-V2\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Github-Projects\\chinmay005-Personal-Finance-Tracker-WPF\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj",
+        "projectUniqueName": "C:\\Github-Projects\\Feb2026\\chinmay005-Personal-Finance-Tracker-WPF-V2\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj",
         "projectName": "PersonalFinanceTracker",
-        "projectPath": "C:\\Github-Projects\\chinmay005-Personal-Finance-Tracker-WPF\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj",
-        "packagesPath": "C:\\Users\\Chinmay\\.nuget\\packages\\",
-        "outputPath": "C:\\Github-Projects\\chinmay005-Personal-Finance-Tracker-WPF\\PersonalFinanceTracker\\obj\\",
+        "projectPath": "C:\\Github-Projects\\Feb2026\\chinmay005-Personal-Finance-Tracker-WPF-V2\\PersonalFinanceTracker\\PersonalFinanceTracker.csproj",
+        "packagesPath": "C:\\Users\\chinm\\.nuget\\packages\\",
+        "outputPath": "C:\\Github-Projects\\Feb2026\\chinmay005-Personal-Finance-Tracker-WPF-V2\\PersonalFinanceTracker\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Chinmay\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\chinm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

@@ -17,6 +17,7 @@ namespace PersonalFinanceTracker
         private const string LogFile = "logs.txt";
         private int? editingTransactionId = null;
         private List<Transaction>? allTransactions = null;
+        private User? _loggedInUser;
 
         public PlotModel IncomeExpenseModel { get; set; } = new PlotModel();
         public PlotModel ExpenseDistributionModel { get; set; } = new PlotModel();
@@ -24,19 +25,38 @@ namespace PersonalFinanceTracker
         public MainWindow()
         {
             InitializeComponent();
+            InitializeApplication(null);
+        }
+
+        public MainWindow(User loggedInUser)
+        {
+            InitializeComponent();
+            _loggedInUser = loggedInUser;
+            InitializeApplication(_loggedInUser);
+        }
+
+        private void InitializeApplication(User? user)
+        {
             try
             {
                 // Set DataContext for binding
                 this.DataContext = this;
 
+                // Update window title with username if logged in
+                if (user != null)
+                {
+                    this.Title = $"Personal Finance Tracker - {user.Username}";
+                    AddLog($"👤 Logged in as: {user.Username}");
+                }
+
                 // Initialize DatePicker
                 DateInput.SelectedDate = DateTime.Now;
-                
+
                 db = new DatabaseHelper();
-                
+
                 // Load categories dynamically
                 LoadCategories();
-                
+
                 // Load transaction data
                 LoadData();
                 AddLog("✅ Application started successfully");
@@ -80,7 +100,7 @@ namespace PersonalFinanceTracker
                     db.AddTransaction(date, category, amount, notes);
                     AddLog($"✅ Added | {date:yyyy-MM-dd} | {category} | ₹{amount:F2} | {notes}");
                 }
-                
+
                 // Clear inputs on success
                 DateInput.SelectedDate = DateTime.Now;
                 CategoryInput.SelectedIndex = 0;
@@ -109,7 +129,7 @@ namespace PersonalFinanceTracker
                         .FirstOrDefault(item => item.Content.ToString() == transaction.Category) ?? CategoryInput.Items[0];
                     AmountInput.Text = transaction.Amount.ToString();
                     NotesInput.Text = transaction.Notes;
-                    
+
                     editingTransactionId = transaction.Id;
                     AddButton.Content = "💾 Update Transaction";
                     AddLog($"📝 Editing transaction [{transaction.Id}] - Make changes and click Update");
@@ -202,7 +222,7 @@ namespace PersonalFinanceTracker
 
                 allTransactions = db.GetTransactions();
                 TransactionsGrid.ItemsSource = allTransactions;
-                
+
                 var summary = db.GetSummary();
                 IncomeLabel.Text = $"Income: ₹{summary.TotalIncome:F2}";
                 ExpenseLabel.Text = $"Expenses: ₹{summary.TotalExpenses:F2}";
@@ -258,27 +278,27 @@ namespace PersonalFinanceTracker
                     return;
 
                 var categories = db.GetCategories();
-                
+
                 // Populate CategoryInput ComboBox with categories separated by Income/Expense
                 CategoryInput.Items.Clear();
-                
+
                 // Add Income categories first
                 var incomeCategories = categories.Where(c => c.Type == "Income").OrderBy(c => c.Name).ToList();
                 foreach (var category in incomeCategories)
                 {
                     CategoryInput.Items.Add(new ComboBoxItem { Content = category.Name });
                 }
-                
+
                 // Add separator
                 CategoryInput.Items.Add(new Separator());
-                
+
                 // Add Expense categories
                 var expenseCategories = categories.Where(c => c.Type == "Expense").OrderBy(c => c.Name).ToList();
                 foreach (var category in expenseCategories)
                 {
                     CategoryInput.Items.Add(new ComboBoxItem { Content = category.Name });
                 }
-                
+
                 if (CategoryInput.Items.Count > 0)
                 {
                     // Find first ComboBoxItem (skip Separator)
@@ -401,8 +421,8 @@ namespace PersonalFinanceTracker
                 // Apply keyword filter
                 if (!string.IsNullOrEmpty(keyword))
                 {
-                    filtered = filtered.Where(t => 
-                        t.Category.ToLower().Contains(keyword) || 
+                    filtered = filtered.Where(t =>
+                        t.Category.ToLower().Contains(keyword) ||
                         t.Notes.ToLower().Contains(keyword));
                 }
 
@@ -443,8 +463,8 @@ namespace PersonalFinanceTracker
 
                 if (allTransactions == null || allTransactions.Count == 0)
                 {
-                    IncomeExpenseModel.Annotations.Add(new OxyPlot.Annotations.TextAnnotation 
-                    { 
+                    IncomeExpenseModel.Annotations.Add(new OxyPlot.Annotations.TextAnnotation
+                    {
                         Text = "No data available",
                         TextPosition = new DataPoint(0.5, 0.5),
                         FontSize = 12
@@ -551,8 +571,8 @@ namespace PersonalFinanceTracker
 
                 if (allTransactions == null || allTransactions.Count == 0)
                 {
-                    ExpenseDistributionModel.Annotations.Add(new OxyPlot.Annotations.TextAnnotation 
-                    { 
+                    ExpenseDistributionModel.Annotations.Add(new OxyPlot.Annotations.TextAnnotation
+                    {
                         Text = "No data available",
                         TextPosition = new DataPoint(0.5, 0.5),
                         FontSize = 12
@@ -590,8 +610,8 @@ namespace PersonalFinanceTracker
 
                 if (expensesByCategory.Count == 0)
                 {
-                    ExpenseDistributionModel.Annotations.Add(new OxyPlot.Annotations.TextAnnotation 
-                    { 
+                    ExpenseDistributionModel.Annotations.Add(new OxyPlot.Annotations.TextAnnotation
+                    {
                         Text = "No expenses found",
                         TextPosition = new DataPoint(0.5, 0.5),
                         FontSize = 12

@@ -1,0 +1,187 @@
+<Window x:Class="PersonalFinanceTracker.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Personal Finance Tracker - Login"
+        Height="500"
+        Width="400"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5"
+        ResizeMode="NoResize">
+  <Grid>
+    <StackPanel VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="350">
+      <!-- Title -->
+      <TextBlock Text="💰 Personal Finance Tracker"
+                 FontSize="24"
+                 FontWeight="Bold"
+                 Foreground="#333333"
+                 TextAlignment="Center"
+                 Margin="0,0,0,10"/>
+
+      <!-- Subtitle -->
+      <TextBlock Text="Manage Your Finances"
+                 FontSize="12"
+                 Foreground="#666666"
+                 TextAlignment="Center"
+                 Margin="0,0,0,30"/>
+
+      <!-- Tab Control for Login/Signup -->
+      <TabControl Name="LoginSignupTabs"
+                  Height="380">
+        <!-- Login Tab -->
+        <TabItem Header="Login"
+                 Background="White">
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20,20,20,20">
+              <!-- Username -->
+              <TextBlock Text="Username"
+                         FontWeight="Bold"
+                         Foreground="#333333"
+                         Margin="0,0,0,5"/>
+              <TextBox Name="LoginUsername"
+                       Height="35"
+                       Padding="10"
+                       FontSize="12"
+                       Margin="0,0,0,15"
+                       Background="White"
+                       BorderBrush="#CCCCCC"
+                       BorderThickness="1"/>
+
+              <!-- Password -->
+              <TextBlock Text="Password"
+                         FontWeight="Bold"
+                         Foreground="#333333"
+                         Margin="0,0,0,5"/>
+              <PasswordBox x:Name="LoginPassword"
+                           Height="35"
+                           Padding="10"
+                           FontSize="12"
+                           Margin="0,0,0,20"
+                           Background="White"
+                           BorderBrush="#CCCCCC"
+                           BorderThickness="1"
+                           KeyDown="LoginPassword_KeyDown"/>
+
+              <!-- Error Message -->
+              <TextBlock Name="LoginErrorMessage"
+                         Foreground="Red"
+                         FontSize="11"
+                         TextWrapping="Wrap"
+                         Margin="0,0,0,15"
+                         Visibility="Collapsed"/>
+
+              <!-- Login Button -->
+              <Button Content="Login"
+                      Click="LoginButton_Click"
+                      Height="40"
+                      Background="#007ACC"
+                      Foreground="White"
+                      FontSize="14"
+                      FontWeight="Bold"
+                      Cursor="Hand"
+                      Margin="0,0,0,10"/>
+
+              <!-- Switch to Signup -->
+              <TextBlock TextAlignment="Center"
+                         Margin="0,10,0,0">
+                            <Run Text="Don't have an account? "/>
+                            <Hyperlink Click="SwitchToSignup">Sign up</Hyperlink>
+              </TextBlock>
+            </StackPanel>
+          </ScrollViewer>
+        </TabItem>
+
+        <!-- Signup Tab -->
+        <TabItem Header="Sign Up"
+                 Background="White">
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20,20,20,20">
+              <!-- Username -->
+              <TextBlock Text="Username"
+                         FontWeight="Bold"
+                         Foreground="#333333"
+                         Margin="0,0,0,5"/>
+              <TextBox Name="SignupUsername"
+                       Height="35"
+                       Padding="10"
+                       FontSize="12"
+                       Margin="0,0,0,8"
+                       Background="White"
+                       BorderBrush="#CCCCCC"
+                       BorderThickness="1"/>
+
+              <!-- Email -->
+              <TextBlock Text="Email"
+                         FontWeight="Bold"
+                         Foreground="#333333"
+                         Margin="0,0,0,3"/>
+              <TextBox Name="SignupEmail"
+                       Height="35"
+                       Padding="10"
+                       FontSize="12"
+                       Margin="0,0,0,8"
+                       Background="White"
+                       BorderBrush="#CCCCCC"
+                       BorderThickness="1"/>
+
+              <!-- Password -->
+              <TextBlock Text="Password"
+                         FontWeight="Bold"
+                         Foreground="#333333"
+                         Margin="0,0,0,5"/>
+              <PasswordBox x:Name="SignupPassword"
+                           Height="35"
+                           Padding="10"
+                           FontSize="12"
+                           Margin="0,0,0,8"
+                           Background="White"
+                           BorderBrush="#CCCCCC"
+                           BorderThickness="1"/>
+
+              <!-- Confirm Password -->
+              <TextBlock Text="Confirm Password"
+                         FontWeight="Bold"
+                         Foreground="#333333"
+                         Margin="0,0,0,3"/>
+              <PasswordBox x:Name="SignupConfirmPassword"
+                           Height="35"
+                           Padding="10"
+                           FontSize="12"
+                           Margin="0,0,0,8"
+                           Background="White"
+                           BorderBrush="#CCCCCC"
+                           BorderThickness="1"/>
+
+              <!-- Error Message -->
+              <TextBlock Name="SignupErrorMessage"
+                         Foreground="Red"
+                         FontSize="11"
+                         TextWrapping="Wrap"
+                         Margin="0,0,0,10"
+                         Visibility="Collapsed"/>
+
+              <!-- Signup Button -->
+              <Button Content="Create Account"
+                      Click="SignupButton_Click"
+                      Height="40"
+                      Background="#28A745"
+                      Foreground="White"
+                      FontSize="14"
+                      FontWeight="Bold"
+                      Cursor="Hand"
+                      Margin="0,0,0,10"/>
+
+              <!-- Switch to Login -->
+              <TextBlock TextAlignment="Center"
+                         Margin="0,5,0,0">
+                            <Run Text="Already have an account? "/>
+                            <Hyperlink Click="SwitchToLogin">Log in</Hyperlink>
+              </TextBlock>
+            </StackPanel>
+          </ScrollViewer>
+        </TabItem>
+      </TabControl>
+    </StackPanel>
+  </Grid>
+</Window>

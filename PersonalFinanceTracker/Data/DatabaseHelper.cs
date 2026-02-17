@@ -1,10 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.Data.Sqlite;
 
 namespace PersonalFinanceTracker.Data
 {
+    /// <summary>
+    /// User model class
+    /// </summary>
+    public class User
+    {
+        public int Id { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+    }
+
     /// <summary>
     /// Transaction model class
     /// </summary>
@@ -54,13 +68,28 @@ namespace PersonalFinanceTracker.Data
         }
 
         /// <summary>
-        /// Initializes the database and creates the Transactions and Categories tables if they don't exist
+        /// Initializes the database and creates the Users, Transactions and Categories tables if they don't exist
         /// </summary>
         private void InitializeDatabase()
         {
             using (SqliteConnection connection = new SqliteConnection(_connectionString))
             {
                 connection.Open();
+
+                // Create Users table
+                string createUsersTableQuery = @"
+                    CREATE TABLE IF NOT EXISTS Users (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        Username TEXT NOT NULL UNIQUE,
+                        Email TEXT NOT NULL UNIQUE,
+                        PasswordHash TEXT NOT NULL,
+                        CreatedAt TEXT NOT NULL
+                    )";
+
+                using (SqliteCommand command = new SqliteCommand(createUsersTableQuery, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
 
                 // Create Transactions table
                 string createTransactionsTableQuery = @"
@@ -402,6 +431,170 @@ namespace PersonalFinanceTracker.Data
             // Fallback to hardcoded list if category not found
             string[] incomeCategories = { "Salary", "Bonus", "Investment", "Gift", "Other Income" };
             return incomeCategories.Contains(category, StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Hashes a password using SHA256
+        /// </summary>
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
+            }
+        }
+
+        /// <summary>
+        /// Verifies a password against its hash
+        /// </summary>
+        private bool VerifyPassword(string password, string hash)
+        {
+            var hashOfInput = HashPassword(password);
+            return hashOfInput.Equals(hash);
+        }
+
+        /// <summary>
+        /// Registers a new user
+        /// </summary>
+        public bool RegisterUser(string username, string email, string password)
+        {
+            try
+            {
+                // Validate input
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                {
+                    return false;
+                }
+
+                string passwordHash = HashPassword(password);
+
+                using (SqliteConnection connection = new SqliteConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string insertQuery = @"
+                        INSERT INTO Users (Username, Email, PasswordHash, CreatedAt)
+                        VALUES (@username, @email, @passwordHash, @createdAt)";
+
+                    using (SqliteCommand command = new SqliteCommand(insertQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@username", username);
+                        command.Parameters.AddWithValue("@email", email);
+                        command.Parameters.AddWithValue("@passwordHash", passwordHash);
+                        command.Parameters.AddWithValue("@createdAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Username or email already exists
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Authenticates a user and returns the user object if successful
+        /// </summary>
+        public User? AuthenticateUser(string username, string password)
+        {
+            try
+            {
+                using (SqliteConnection connection = new SqliteConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT Id, Username, Email, PasswordHash, CreatedAt FROM Users WHERE Username = @username";
+
+                    using (SqliteCommand command = new SqliteCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@username", username);
+
+                        using (SqliteDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string storedHash = reader["PasswordHash"].ToString() ?? "";
+
+                                if (VerifyPassword(password, storedHash))
+                                {
+                                    return new User
+                                    {
+                                        Id = Convert.ToInt32(reader["Id"]),
+                                        Username = reader["Username"].ToString() ?? string.Empty,
+                                        Email = reader["Email"].ToString() ?? string.Empty,
+                                        PasswordHash = storedHash,
+                                        CreatedAt = DateTime.Parse(reader["CreatedAt"].ToString() ?? DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Checks if a username already exists
+        /// </summary>
+        public bool UsernameExists(string username)
+        {
+            try
+            {
+                using (SqliteConnection connection = new SqliteConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT COUNT(*) FROM Users WHERE Username = @username";
+
+                    using (SqliteCommand command = new SqliteCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@username", username);
+                        int count = Convert.ToInt32(command.ExecuteScalar());
+                        return count > 0;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks if an email already exists
+        /// </summary>
+        public bool EmailExists(string email)
+        {
+            try
+            {
+                using (SqliteConnection connection = new SqliteConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT COUNT(*) FROM Users WHERE Email = @email";
+
+                    using (SqliteCommand command = new SqliteCommand(selectQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@email", email);
+                        int count = Convert.ToInt32(command.ExecuteScalar());
+                        return count > 0;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
