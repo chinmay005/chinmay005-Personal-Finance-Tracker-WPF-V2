@@ -1,7 +1,7 @@
 # Personal Finance Tracker - V2 Development
 
 > **🚀 Version 2.0 In Progress** - Active development branch with new features and enhancements
-> 
+>
 > This is the V2 development repository, based on the stable V1.0.0 release.
 > For the stable version, see [V1.0.0 Release](https://github.com/chinmay005/Personal-Finance-Tracker-WPF/releases/tag/v1.0.0)
 
@@ -9,7 +9,18 @@ A powerful and intuitive WPF desktop application to manage personal expenses and
 
 ## Features
 
+🔐 **User Authentication & Profile Management**
+
+- ✅ Secure user registration with email validation
+- ✅ Password hashing using SHA256 encryption
+- ✅ User login with username and password
+- ✅ Unique username and email constraints
+- ✅ Per-user transaction and category isolation
+- ✅ User profile display in application window title
+- ✅ Password strength validation (minimum 6 characters)
+
 ✨ **Core Transaction Management**
+
 - ✅ Add income and expense transactions with ease
 - ✅ Edit and delete existing transactions with confirmation dialogs
 - ✅ View all transactions in a searchable, sortable data grid
@@ -19,18 +30,21 @@ A powerful and intuitive WPF desktop application to manage personal expenses and
 - ✅ Transaction activity log with timestamps and action indicators
 
 📊 **Advanced Visualizations**
+
 - ✅ **Monthly Income vs Expenses Line Chart** - Track income and expense trends over time
 - ✅ **Monthly Expense Distribution Pie Chart** - Visualize expense breakdown by category
 - ✅ Color-coded charts for easy interpretation
 - ✅ Interactive chart legends and axis labels
 
 🔍 **Search & Filter**
+
 - ✅ **Keyword Search** - Filter transactions by category or notes
 - ✅ **Date Range Filters** - View transactions within specific date ranges
 - ✅ **Clear All Filters** - Quickly reset filters to view all transactions
 - ✅ Real-time filtered results display
 
 📁 **Category Management**
+
 - ✅ Dynamic category management - Add, edit, and delete custom categories
 - ✅ Income and Expense category separation
 - ✅ Category icons/emojis for better UX
@@ -38,12 +52,14 @@ A powerful and intuitive WPF desktop application to manage personal expenses and
 - ✅ Income/Expense dropdown with visual separator
 
 🛡️ **Reliability**
+
 - ✅ Input validation for all fields
 - ✅ Comprehensive error handling
 - ✅ Error logging to `logs.txt` for debugging
 - ✅ SQLite database persistence
 
 💅 **User Interface**
+
 - ✅ Tab-based layout (Transactions, Categories, Graphs)
 - ✅ Modern Material Design with professional styling
 - ✅ Blue borders for active tabs
@@ -68,33 +84,39 @@ A powerful and intuitive WPF desktop application to manage personal expenses and
 PersonalFinanceTracker/
 ├── Data/
 │   └── DatabaseHelper.cs       # Database operations & models
-├── MainWindow.xaml             # UI layout
+├── LoginWindow.xaml            # Login/Register UI
+├── LoginWindow.xaml.cs         # Login/Register logic
+├── MainWindow.xaml             # Main application UI layout
 ├── MainWindow.xaml.cs          # Event handlers & business logic
 ├── App.xaml                    # Application configuration
-├── App.xaml.cs                 # Application startup
+├── App.xaml.cs                 # Application startup & window management
 └── PersonalFinanceTracker.csproj
 ```
 
 ## Installation & Setup
 
 ### Prerequisites
+
 - .NET 10.0 SDK or higher
 - Windows OS (for WPF)
 
 ### Steps
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/chinmay005/Personal-Finance-Tracker-WPF.git
    cd chinmay005-Personal-Finance-Tracker-WPF/PersonalFinanceTracker
    ```
 
 2. **Restore dependencies**
+
    ```bash
    dotnet restore
    ```
 
 3. **Build the project**
+
    ```bash
    dotnet build
    ```
@@ -106,6 +128,37 @@ PersonalFinanceTracker/
 
 ## Usage
 
+### Getting Started - Login & Registration
+
+#### First Time Users (Creating Account)
+
+1. **Launch the application** - Login window will appear
+2. Click on the **"Sign Up"** tab
+3. Enter your details:
+   - **Username**: Must be at least 3 characters long (unique)
+   - **Email**: Valid email address (unique)
+   - **Password**: Minimum 6 characters
+   - **Confirm Password**: Must match the password field
+4. Click **"Create Account"** button
+5. Success message will appear - you can now log in
+
+#### Returning Users (Login)
+
+1. **Launch the application** - Login window will appear
+2. **Login tab** is selected by default
+3. Enter your credentials:
+   - **Username**: Your registered username
+   - **Password**: Your account password
+4. Click **"Login"** button or press **Enter** in the password field
+5. **MainWindow** will open with your username displayed in the title bar
+
+#### About Your Account
+
+- Each user has their **own separate data** (transactions, categories)
+- Password is **securely hashed** using SHA256 encryption
+- Username and email are **unique** across all users
+- Your data is stored in the SQLite database with user isolation
+
 ### Adding a Transaction
 
 1. Go to the **💳 Transactions** tab
@@ -114,7 +167,7 @@ PersonalFinanceTracker/
    - **Income**: Salary, Bonus, Investment, Gift, Other Income
    - **Expense**: Food, Rent, Transport, Entertainment, Utilities, Healthcare, Other
 4. Enter the **amount** (positive number only)
-5. *(Optional)* Add **notes** for transaction details
+5. _(Optional)_ Add **notes** for transaction details
 6. Click **"➕ Add Transaction"** button
 
 ### Searching & Filtering Transactions
@@ -143,7 +196,7 @@ PersonalFinanceTracker/
 2. **Add a New Category**
    - Enter category **name** (e.g., "Shopping")
    - Select **type**: Income or Expense
-   - *(Optional)* Add an **icon** (emoji, e.g., 🛍️)
+   - _(Optional)_ Add an **icon** (emoji, e.g., 🛍️)
    - Click **"➕ Add Category"** button
 3. **View Existing Categories**
    - All categories are displayed in the data grid
@@ -155,6 +208,7 @@ PersonalFinanceTracker/
 ### Summary Dashboard
 
 The bottom section displays real-time summaries:
+
 - **💚 Total Income**: Sum of all income transactions (Green)
 - **❤️ Total Expenses**: Sum of all expense transactions (Red)
 - **💙 Balance**: Income minus Expenses (Blue)
@@ -162,18 +216,21 @@ The bottom section displays real-time summaries:
 ## Key Features Explained
 
 ### Input Validation
+
 - Amount must be a positive decimal number
 - Date must be selected
 - Category must be chosen
 - Shows validation messages if any field is invalid
 
 ### Error Handling
+
 - All database operations are wrapped in try-catch blocks
 - Errors are logged to `logs.txt` in the application directory
 - User-friendly error messages are displayed
 - Application continues to function even if an error occurs
 
 ### Data Persistence
+
 - Uses SQLite database (`finance.db`)
 - Automatically creates the database on first run
 - Transactions are stored permanently
@@ -181,6 +238,7 @@ The bottom section displays real-time summaries:
 ## Database Schema
 
 ### Transactions Table
+
 ```sql
 CREATE TABLE Transactions (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -192,6 +250,7 @@ CREATE TABLE Transactions (
 ```
 
 ### Categories Table
+
 ```sql
 CREATE TABLE Categories (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -202,12 +261,13 @@ CREATE TABLE Categories (
 ```
 
 **Default Categories:**
+
 - **Income**: Salary 💼, Bonus 🎁, Investment 📈, Gift 🎉, Other Income 💰
 - **Expense**: Food 🍔, Rent 🏠, Transport 🚗, Entertainment 🎬, Utilities 💡, Healthcare 🏥, Other 📦
 
 ## Screenshots
 
-*(To be added - Take screenshots using Windows Snipping Tool or ShareX and save to `docs/screenshots/`)*
+_(To be added - Take screenshots using Windows Snipping Tool or ShareX and save to `docs/screenshots/`)_
 
 - Main Window with Transaction List
 - Category Management Section
@@ -216,6 +276,7 @@ CREATE TABLE Categories (
 ## Future Enhancements
 
 ### V2.0 Roadmap (Priority)
+
 - [ ] Budget planning and spending limits per category
 - [ ] Spending alerts when budget threshold exceeded
 - [ ] Monthly/yearly financial summaries and reports
@@ -227,6 +288,7 @@ CREATE TABLE Categories (
 - [ ] Database backup and restore functionality
 
 ### Future Releases (V2.1+)
+
 - [x] Edit and delete transactions
 - [x] Category management and custom categories
 - [x] Charts and graphs for expense visualization (Line chart, Pie chart)
@@ -253,6 +315,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Support
 
 If you encounter any issues, please:
+
 1. Check the `logs.txt` file for error details
 2. Open an issue on GitHub with a detailed description
 3. Include steps to reproduce the problem
@@ -260,10 +323,12 @@ If you encounter any issues, please:
 ## Changelog
 
 ### Version 2.0.0 (Development) 🔄
+
 **Status**: Active Development
 **Base**: Built from v1.0.0 stable release
 
 🎯 **Planned Features for V2.0**
+
 - 🚀 Enhanced dashboard with quick statistics
 - 🎯 Budget planning and spending alerts
 - 📊 Advanced reporting with monthly/yearly summaries
@@ -276,9 +341,11 @@ If you encounter any issues, please:
 - 📱 Responsive layout improvements
 
 ### Version 1.0.0 (Release) 🎉
+
 **Release Date**: February 17, 2026
 
 ✨ **New Features**
+
 - ✨ **Graphs Tab** with interactive charts:
   - 📈 Monthly Income vs Expenses Line Chart - Track financial trends over time
   - 🥧 Monthly Expense Distribution Pie Chart - Visualize spending by category
@@ -299,11 +366,13 @@ If you encounter any issues, please:
   - Emoji support with proper Unicode encoding
 
 🐛 **Bug Fixes**
+
 - Fixed emoji corruption issues with proper Unicode escape sequences
 - Resolved tab styling and visibility issues
 - Fixed category dropdown display issues
 
 💅 **Improvements**
+
 - Responsive UI with Material Design colors
 - Better error messages and validation feedback
 - Comprehensive activity logging with timestamps
@@ -311,6 +380,7 @@ If you encounter any issues, please:
 - Professional styling across all components
 
 ### Version 0.1.0 (Initial Release)
+
 - Initial project setup
 - Core transaction management functionality
 - SQLite database integration
