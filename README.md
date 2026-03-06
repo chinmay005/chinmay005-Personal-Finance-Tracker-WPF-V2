@@ -237,6 +237,18 @@ The bottom section displays real-time summaries:
 
 ## Database Schema
 
+### Users Table
+
+```sql
+CREATE TABLE Users (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username TEXT NOT NULL UNIQUE,
+    Email TEXT NOT NULL UNIQUE,
+    PasswordHash TEXT NOT NULL,
+    CreatedAt TEXT NOT NULL
+)
+```
+
 ### Transactions Table
 
 ```sql
@@ -329,6 +341,10 @@ If you encounter any issues, please:
 
 🎯 **Planned Features for V2.0**
 
+- ✅ User authentication and registration (COMPLETED)
+- ✅ Secure password hashing with SHA256 (COMPLETED)
+- ✅ Login window with tab-based Sign Up (COMPLETED)
+- 🚀 Per-user data isolation
 - 🚀 Enhanced dashboard with quick statistics
 - 🎯 Budget planning and spending alerts
 - 📊 Advanced reporting with monthly/yearly summaries
